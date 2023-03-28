@@ -6,7 +6,6 @@ info:
 
     _If you're looking for the github organization for the following code updates, then click [here](https://github.com/RESTAURANT-org-API). Alternatively, you can load via the [`Github > Swagger OAS 3.0`](https://github.com/RESTAURANT-org-API/swagger) menu option!_
     
-
   termsOfService: http://swagger.io/terms/
   contact:
     email: clinto.abraham@srijan.net
@@ -39,12 +38,6 @@ tags:
     description: Access to staff management api
     externalDocs:
       description: Find out more about our staff
-      url: http://wedding-days.io
-    
-  - name: store
-    description: Access to store management api
-    externalDocs:
-      description: Find out more about our store
       url: http://wedding-days.io
       
   - name: graph
@@ -537,100 +530,6 @@ paths:
             - write:user
             - read:user
 
-  /store/inventoryStatus:
-    get:
-      tags:
-        - store
-      summary: Returns inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventoryStatus
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-        - api_key: []
-  /store/trashInventory:
-    post:
-      tags:
-        - store
-      summary: Trash an item
-      description: Place the trash items in the store
-      operationId: disposeInventory
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Inventory'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Inventory'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Inventory'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Inventory'
-        '405':
-          description: Invalid input
-  /store/order/{orderId}:
-    get:
-      tags:
-        - store
-      summary: Find purchase order by ID
-      description: For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
-      operationId: getOrderById
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of order that needs to be fetched
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-    delete:
-      tags:
-        - store
-      summary: Delete purchase order by ID
-      description: For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-      operationId: deleteOrder
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of the order that needs to be deleted
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
   /graph/sales:
     get:
       tags:
@@ -891,6 +790,10 @@ components:
           type: integer
           format: int64
           example: 3000
+        dateOfTrash:
+          type: string
+          format: date-time
+          example: "Tue Mar 27 2023 15:18:19 GMT+0530 (India Standard Time)"
       xml:
         name: trash
         
@@ -965,7 +868,6 @@ components:
           example: '94301'
       xml:
         name: address
-        
         
   securitySchemes:
     restaurant_store_auth:
